@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+<!--Common-->
+ 
+  
+<!--Settings-->  
+  <!--General-->
+  <string id="100">Allgemein</string>
+  <string id="101">FHEM IP</string>
+  <string id="102">FHEM Port</string>
+  <string id="103">Kodi 1</string>
+  <string id="1031">Anzeigename</string>
+  <string id="1032">Enabled</string>
+  <string id="104">Kodi 2</string>
+  <string id="1041">Anzeigename</string>
+  <string id="1042">Enabled</string>
+  <string id="105">Kodi 3</string>
+  <string id="1051">Anzeigename</string>
+  <string id="1052">Enabled</string>
+  <string id="106">Kodi 4</string>
+  <string id="1061">Anzeigename</string>
+  <string id="1062">Enabled</string>
+
+  <!--Notifications-->                                                                                                                                                                                           
+  <string id="500">Fehler beim Verbinden zu Remote Kodi!</string>
+  <string id="501">Verbunden mit Remote Kodi!</string>
+  <string id="502">Einstellungen geaendert!</string>
+</strings>
+
