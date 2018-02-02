@@ -6,8 +6,6 @@
 <!--Settings-->  
   <!--General-->
   <string id="100">Allgemein</string>
-  <string id="101">FHEM IP</string>
-  <string id="102">FHEM Port</string>
   <string id="103">Kodi 1</string>
   <string id="1031">Anzeigename</string>
   <string id="1032">Enabled</string>

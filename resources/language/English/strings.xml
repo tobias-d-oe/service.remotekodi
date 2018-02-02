@@ -6,12 +6,23 @@
 <!--Settings-->  
   <!--General-->
   <string id="100">General</string>
-  <string id="101">FHEM IP</string>
-  <string id="102">FHEM Port</string>
+  <string id="103">Kodi 1</string>
+  <string id="1031">Displayname</string>
+  <string id="1032">Enabled</string>
+  <string id="104">Kodi 2</string>
+  <string id="1041">Displayname</string>
+  <string id="1042">Enabled</string>
+  <string id="105">Kodi 3</string>
+  <string id="1051">Displayname</string>
+  <string id="1052">Enabled</string>
+  <string id="106">Kodi 4</string>
+  <string id="1061">Displayname</string>
+  <string id="1062">Enabled</string>
+
 
   <!--Notifications-->
-  <string id="500">Failed to connect to FHEM!</string>
-  <string id="501">Connected to FHEM!</string>
+  <string id="500">Failed to connect to Remote Kodi!</string>
+  <string id="501">Connected to Remote Kodi!</string>
   <string id="502">Settings changed!</string>
 </strings>
 

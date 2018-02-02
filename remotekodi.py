@@ -51,56 +51,21 @@ def fetchRemoteKodi():
   global g_failedConnectionNotified
   
   while not xbmc.abortRequested:
-    try:
-      kodiip = __settings__.getSetting("kodiipwz")
-      kodiisenabled = __settings__.getSetting("kodienablewz")   
-      kodidisplayname = __settings__.getSetting("kodinamewz") 
-      ret = remotekodi_fetch(kodiip, kodiisenabled, kodidisplayname)
-    except:
-      writeLog('Kodi %s not online, cleaning Property' % (kodidisplayname), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).clearProperty('%s.channel' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.channellogo' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.title' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.kodiname' % (kodidisplayname))
-
-
-    try:
-      kodiip = __settings__.getSetting("kodiipsz")
-      kodiisenabled = __settings__.getSetting("kodienablesz")   
-      kodidisplayname = __settings__.getSetting("kodinamesz") 
-      ret = remotekodi_fetch(kodiip, kodiisenabled, kodidisplayname)
-    except:
-      writeLog('Kodi %s not online, cleaning Property' % (kodidisplayname), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).clearProperty('%s.channel' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.channellogo' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.title' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.kodiname' % (kodidisplayname))
-
-
-    try:
-      kodiip = __settings__.getSetting("kodiipkueche")
-      kodiisenabled = __settings__.getSetting("kodienablekueche")   
-      kodidisplayname = __settings__.getSetting("kodinamekueche") 
-      ret = remotekodi_fetch(kodiip, kodiisenabled, kodidisplayname)
-    except:
-      writeLog('Kodi %s not online, cleaning Property' % (kodidisplayname), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).clearProperty('%s.channel' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.channellogo' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.title' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.kodiname' % (kodidisplayname))
-
-    try:
-      kodiip = __settings__.getSetting("kodiipbad")
-      kodiisenabled = __settings__.getSetting("kodienablebad")   
-      kodidisplayname = __settings__.getSetting("kodinamebad") 
-      ret = remotekodi_fetch(kodiip, kodiisenabled, kodidisplayname)
-    except:
-      writeLog('Kodi %s not online, cleaning Property' % (kodidisplayname), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).clearProperty('%s.channel' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.channellogo' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.title' % (kodidisplayname))
-      xbmcgui.Window(10000).clearProperty('%s.kodiname' % (kodidisplayname))
-
+    writeLog('Updating Remote Kodi PVR Informations', level=xbmc.LOGNOTICE)
+    for x in range(1, 4):
+      try:
+        kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+        kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))   
+        kodidisplayname = __settings__.getSetting("kodiname.%s" % (str(x))) 
+        ret = remotekodi_fetch(kodiip, kodiisenabled, kodidisplayname, str(x))
+      except:
+        writeLog('Kodi %s not online, cleaning Property' % (kodidisplayname), level=xbmc.LOGDEBUG)
+        xbmcgui.Window(10000).clearProperty('kodi.%s.channel' % (x))
+        xbmcgui.Window(10000).clearProperty('kodi.%s.channellogo' % (x))
+        xbmcgui.Window(10000).clearProperty('kodi.%s.title' % (x))
+        xbmcgui.Window(10000).clearProperty('kodi.%s.kodiname' % (x))
+  
+  
     remotekodi_active()
 
 

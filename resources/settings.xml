@@ -2,24 +2,24 @@
 <settings>
   <category label="100">
 
-    <setting id="kodiipwz" type="ipaddress" label="103" default="192.168.0.70" />
-    <setting id="kodinamewz" type="text" label="1031" default="Wohnzimmer"/>
-    <setting id="kodienablewz" type="bool" label="1032" default="true" />
+    <setting id="kodiip.1" type="ipaddress" label="103" default="192.168.0.70" />
+    <setting id="kodiname.1" type="text" label="1031" default="Wohnzimmer"/>
+    <setting id="kodienable.1" type="bool" label="1032" default="true" />
     <setting type="sep" />
 
-    <setting id="kodiipsz" type="ipaddress" label="104" default="192.168.0.71" />
-    <setting id="kodinamesz" type="text" label="1031" default="Schlafzimmer"/>
-    <setting id="kodienablesz" type="bool" label="1042" default="true" />
+    <setting id="kodiip.2" type="ipaddress" label="104" default="192.168.0.71" />
+    <setting id="kodiname.2" type="text" label="1031" default="Schlafzimmer"/>
+    <setting id="kodienable.2" type="bool" label="1042" default="true" />
     <setting type="sep" />
 
-    <setting id="kodiipkueche" type="ipaddress" label="105" default="192.168.0.72" />
-    <setting id="kodinamekueche" type="text" label="1051" default="Kueche"/>
-    <setting id="kodienablekueche" type="bool" label="1052" default="true" />
+    <setting id="kodiip.3" type="ipaddress" label="105" default="192.168.0.72" />
+    <setting id="kodiname.3" type="text" label="1051" default="Kueche"/>
+    <setting id="kodienable.3" type="bool" label="1052" default="true" />
     <setting type="sep" />
 
-    <setting id="kodiipbad" type="ipaddress" label="106" default="192.168.0.73" />
-    <setting id="kodinamebad" type="text" label="1061" default="Bad"/>
-    <setting id="kodienablebad" type="bool" label="1062" default="true" />
+    <setting id="kodiip.4" type="ipaddress" label="106" default="192.168.0.73" />
+    <setting id="kodiname.4" type="text" label="1061" default="Bad"/>
+    <setting id="kodienable.4" type="bool" label="1062" default="true" />
     <setting type="sep" />
 
 

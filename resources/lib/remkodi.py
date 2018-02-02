@@ -51,7 +51,7 @@ def writeLog(message, level=xbmc.LOGNOTICE):
 
 
 def remotekodi_active():
-    if xbmcgui.Window(10000).getProperty('%s.channel' % (__settings__.getSetting("kodinamewz"))) == "" and xbmcgui.Window(10000).getProperty('%s.channel' % (__settings__.getSetting("kodinamesz"))) == "" and xbmcgui.Window(10000).getProperty('%s.channel' % (__settings__.getSetting("kodinamekueche"))) == "" and xbmcgui.Window(10000).getProperty('%s.channel' % (__settings__.getSetting("kodinamebad"))) == "":
+    if xbmcgui.Window(10000).getProperty('kodi.1.channel') == "" and xbmcgui.Window(10000).getProperty('kodi.2.channel') == "" and xbmcgui.Window(10000).getProperty('kodi.3.channel') == "" and xbmcgui.Window(10000).getProperty('kodi.4.channel') == "":
       xbmcgui.Window(10000).clearProperty('RemoteKodi.Active')
       writeLog('Remotekodi active        : False', level=xbmc.LOGDEBUG)
 
@@ -61,7 +61,7 @@ def remotekodi_active():
 
   
 
-def remotekodi_fetch(ip, isenabled, displayname):
+def remotekodi_fetch(ip, isenabled, displayname, nr):
   import urllib2
   import urllib 
 
@@ -86,26 +86,26 @@ def remotekodi_fetch(ip, isenabled, displayname):
       thumbnail=re.sub(r'/$', '', thumbnail)
       thumbnail=urllib.unquote(thumbnail)
 
-      writeLog('Set Label %s.channel     : %s' % (displayname,label), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).setProperty("%s.channel" % (displayname), label)
-      writeLog('Set Label %s.channellogo : %s' % (displayname,thumbnail), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).setProperty("%s.channellogo" % (displayname), thumbnail)
-      writeLog('Set Label %s.title       : %s' % (displayname,title), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).setProperty("%s.title" % (displayname), title)
-      writeLog('Set Label %s.kodiname    : %s' % (displayname,displayname), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).setProperty("%s.kodiname" % (displayname), displayname)
+      writeLog('Set Label kodi.%s.channel     : %s' % (nr,label), level=xbmc.LOGDEBUG)
+      xbmcgui.Window(10000).setProperty("kodi.%s.channel" % (nr), label)
+      writeLog('Set Label kodi.%s.channellogo : %s' % (nr,thumbnail), level=xbmc.LOGDEBUG)
+      xbmcgui.Window(10000).setProperty("kodi.%s.channellogo" % (nr), thumbnail)
+      writeLog('Set Label kodi.%s.title       : %s' % (nr,title), level=xbmc.LOGDEBUG)
+      xbmcgui.Window(10000).setProperty("kodi.%s.title" % (nr), title)
+      writeLog('Set Label kodi.%s.kodiname    : %s' % (nr,displayname), level=xbmc.LOGDEBUG)
+      xbmcgui.Window(10000).setProperty("kodi.%s.kodiname" % (nr), displayname)
     else:
       writeLog('Cleaning Property for Kodi : %s' % (displayname), level=xbmc.LOGDEBUG)
-      xbmcgui.Window(10000).clearProperty('%s.channel' % (displayname))
-      xbmcgui.Window(10000).clearProperty('%s.channellogo' % (displayname))
-      xbmcgui.Window(10000).clearProperty('%s.title' % (displayname))
-      xbmcgui.Window(10000).clearProperty('%s.kodiname' % (displayname))
+      xbmcgui.Window(10000).clearProperty('kodi.%s.channel' % (nr))
+      xbmcgui.Window(10000).clearProperty('kodi.%s.channellogo' % (nr))
+      xbmcgui.Window(10000).clearProperty('kodi.%s.title' % (nr))
+      xbmcgui.Window(10000).clearProperty('kodi.%s.kodiname' % (nr))
   else:
     writeLog('Cleaning Property for Kodi : %s' % (displayname), level=xbmc.LOGDEBUG)
-    xbmcgui.Window(10000).clearProperty('%s.channel' % (displayname))
-    xbmcgui.Window(10000).clearProperty('%s.channellogo' % (displayname))
-    xbmcgui.Window(10000).clearProperty('%s.title' % (displayname))
-    xbmcgui.Window(10000).clearProperty('%s.kodiname' % (displayname))
+    xbmcgui.Window(10000).clearProperty('kodi.%s.channel' % (nr))
+    xbmcgui.Window(10000).clearProperty('kodi.%s.channellogo' % (nr))
+    xbmcgui.Window(10000).clearProperty('kodi.%s.title' % (nr))
+    xbmcgui.Window(10000).clearProperty('kodi.%s.kodiname' % (nr))
 
 
 
@@ -162,3 +162,36 @@ def send_json_command(xbmc_host, xbmc_port, method, params=None, id=1, username=
 #    except:
 #      pass
 #    
+
+
+def remotekodi_stop(ip, isenabled, displayname):
+  import urllib2
+  import urllib 
+
+  if isenabled == "true":
+    url = 'http://' + str(ip) + '/jsonrpc'
+    data = json.dumps({"jsonrpc": "2.0", "method": "Player.Stop", "params": [1], "id": 1})
+  
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json; charset=utf-8')
+    req.add_header('Content-Length', len(data))
+    f = urllib2.urlopen(req, data)
+    response = f.read()
+    f.close()
+
+def play_local_on_all(ip, isenabled, displayname):
+  import urllib2
+  import urllib 
+
+  if isenabled == "true":
+    url = 'http://' + str(ip) + '/jsonrpc'
+    data = json.dumps({"jsonrpc": "2.0", "method": "Player.Stop", "params": [1], "id": 1})
+  
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json; charset=utf-8')
+    req.add_header('Content-Length', len(data))
+    f = urllib2.urlopen(req, data)
+    response = f.read()
+    f.close()
+
+ 

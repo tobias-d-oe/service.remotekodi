@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includes>
+        <include name="ScriptRemoteKodi">
+		<control type="group" id="474747">
+                  <depth>DepthMenu-</depth>
+                  <visible>Container(9000).Hasfocus(12) + !Skin.HasSetting(HomepageHideRecentlyAddedVideo) + !String.IsEmpty(Window(Home).Property(RemoteKodi.Active)) </visible>
+                  <include>VisibleFadeEffect</include>
+
+		  <posx>270l</posx>
+		  <posy>510</posy>
+
+                  <control type="image">
+                          <description>background</description>
+                          <left>60</left>
+                          <top>0</top>
+                          <width>620</width>
+                          <height>150</height>
+                          <texture border="15">RecentAddedBack.png</texture>
+                  </control>
+
+                        <control type="button" id="4747471">
+                                <description>stop all kodis</description>
+                                <left>60</left>
+                                <top>0</top>
+                                <width>620</width>
+                                <height>150</height>
+                            <onright condition="Control.IsVisible(4949491)">4949491</onright>
+                            <onleft condition="Control.IsVisible(4949491)">4949491</onleft>
+                        <onup>9002</onup>
+                        <ondown>20</ondown>
+
+
+                                <texturefocus>folder-focus.png</texturefocus>
+                                <texturenofocus>button-nofocus.png</texturenofocus>
+                                <onclick>RunScript(service.remotekodi,"?methode=stopall")</onclick>
+                                <onclick>Control.SetFocus(9000)</onclick>
+                                <include>VisibleFadeEffect</include>
+                        </control>
+
+
+
+            	  <control type="label">
+		    <description>Title</description>
+		    <posx>300</posx>
+		    <posy>5</posy>
+		    <width>160</width>
+		    <height>20</height>
+     		    <font>font12</font>
+		    <textcolor>grey</textcolor>
+                    <label>Aktive PVR Streams</label>
+		  </control>
+
+
+
+<!-- KODI 1 Start -->
+            	  <control type="label">
+		    <description>Kodiname</description>
+		    <posx>100</posx>
+		    <posy>28</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.1.kodiname)]</label>
+		  </control>
+
+		  <control type="image">
+		    <description>Channellogo</description>
+		    <posx>260</posx>
+		    <posy>28</posy>
+		    <width>30</width>
+		    <height>30</height>
+                    <texture background="true">$INFO[Window(Home).Property(kodi.1.channellogo)]</texture>
+		  </control>
+
+		  <control type="label">
+		    <description>ChannelName</description>
+		    <posx>300</posx>
+		    <posy>28</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.1.channel)]</label>
+		  </control>
+		  <control type="label">
+		    <description>Title</description>
+		    <posx>450</posx>
+		    <posy>28</posy>
+		    <width>210</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.1.title)]</label>
+		  </control>
+<!-- KODI 1 END-->
+<!-- KODI 2 Start -->
+            	  <control type="label">
+		    <description>Kodiname</description>
+		    <posx>100</posx>
+		    <posy>58</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.2.kodiname)]</label>
+		  </control>
+
+		  <control type="image">
+		    <description>ChannelLogo</description>
+		    <posx>260</posx>
+		    <posy>58</posy>
+		    <width>30</width>
+		    <height>30</height>
+                    <texture background="true">$INFO[Window(Home).Property(kodi.2.channellogo)]</texture>
+		  </control>
+
+		  <control type="label">
+		    <description>ChannelName</description>
+		    <posx>300</posx>
+		    <posy>58</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.2.channel)]</label>
+		  </control>
+		  <control type="label">
+		    <description>Title</description>
+		    <posx>450</posx>
+		    <posy>58</posy>
+		    <width>210</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.2.title)]</label>
+		  </control>
+<!-- KODI 2 END-->
+<!-- KODI 3 Start -->
+            	  <control type="label">
+		    <description>Kodiname</description>
+		    <posx>100</posx>
+		    <posy>88</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.3.kodiname)]</label>
+		  </control>
+
+		  <control type="image">
+		    <description>ChannelLogo</description>
+		    <posx>260</posx>
+		    <posy>88</posy>
+		    <width>30</width>
+		    <height>30</height>
+                    <texture background="true">$INFO[Window(Home).Property(kodi.3.channellogo)]</texture>
+		  </control>
+
+		  <control type="label">
+		    <description>ChannelName</description>
+		    <posx>300</posx>
+		    <posy>88</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.3.channel)]</label>
+		  </control>
+		  <control type="label">
+		    <description>Title</description>
+		    <posx>450</posx>
+		    <posy>88</posy>
+		    <width>210</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.3.title)]</label>
+		  </control>
+<!-- KODI 3 END-->
+<!-- KODI 4 Start -->
+            	  <control type="label">
+		    <description>Kodiname</description>
+		    <posx>100</posx>
+		    <posy>118</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.4.kodiname)]</label>
+		  </control>
+
+		  <control type="image">
+		    <description>ChannelLogo</description>
+		    <posx>260</posx>
+		    <posy>118</posy>
+		    <width>30</width>
+		    <height>30</height>
+                    <texture background="true">$INFO[Window(Home).Property(kodi.4.channellogo)]</texture>
+		  </control>
+
+		  <control type="label">
+		    <description>ChannelName</description>
+		    <posx>300</posx>
+		    <posy>118</posy>
+		    <width>150</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.4.channel)]</label>
+		  </control>
+		  <control type="label">
+		    <description>Title</description>
+		    <posx>450</posx>
+		    <posy>118</posy>
+		    <width>210</width>
+		    <height>20</height>
+     		    <font>font14</font>
+		    <textcolor>white</textcolor>
+                    <label>$INFO[Window(Home).Property(kodi.4.title)]</label>
+		  </control>
+<!-- KODI 4 END-->
+
+
+
+
+
+
+		</control>
+
+	    </include>
+</includes>
+

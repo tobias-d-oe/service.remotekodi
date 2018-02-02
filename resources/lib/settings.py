@@ -60,11 +60,11 @@ def settings_handleNetworkSettings():
   #or if network access is enabled and ip or port have changed
   if g_hostip != hostip or g_hostport != hostport:
     if g_hostip != hostip:
-      print "fhem: changed hostip to " + str(hostip)
+      print "kodi: changed hostip to " + str(hostip)
       g_hostip = hostip
     
     if g_hostport != hostport:
-      print "fhem: changed hostport to " + str(hostport)
+      print "kodi: changed hostport to " + str(hostport)
       g_hostport = hostport
     reconnect = True
   return reconnect
