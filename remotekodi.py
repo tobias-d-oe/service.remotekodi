@@ -52,7 +52,7 @@ def fetchRemoteKodi():
   
   while not xbmc.abortRequested:
     writeLog('Updating Remote Kodi PVR Informations', level=xbmc.LOGNOTICE)
-    for x in range(1, 4):
+    for x in range(1, 5):
       try:
         kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
         kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))   

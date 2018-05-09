@@ -49,12 +49,10 @@ def send_json_command_http(xbmc_host, xbmc_port, method, params=None, id=1, user
     if params is not None:
         command['params'] = params
         
-    writeLog('DEBUG in send_json_command_http params: %s' % (command['params']), level=xbmc.LOGNOTICE)
-    writeLog('DEBUG in send_json_command_http command: %s' % (command), level=xbmc.LOGNOTICE)
+    writeLog('Send JSON command to: %s' % (xbmc_host), level=xbmc.LOGNOTICE)
     payload = json.dumps(command, ensure_ascii=False)
     payload.encode('utf-8')
         
-    writeLog('DEBUG in send_json_command_http PAYLOAD: %s' % (payload), level=xbmc.LOGNOTICE)
     headers = {'Content-Type': 'application/json-rpc; charset=utf-8'}
 
     if password != '':
@@ -72,7 +70,6 @@ def send_json_command_http(xbmc_host, xbmc_port, method, params=None, id=1, user
     conn.close()
         
     if data is not None:
-        writeLog('DEBUG have sent res is: %s' % (json.loads(data)), level=xbmc.LOGNOTICE)
         return json.loads(data)
     else:
         return None
@@ -84,7 +81,6 @@ def send_json_command_http(xbmc_host, xbmc_port, method, params=None, id=1, user
 # 
 ################################################
 def channel_switch_json_command(xbmc_host, xbmc_port, channelid):
-    #command = {'jsonrpc': '2.0', 'method': method, 'id': id}
     command = {
         "jsonrpc": "2.0",
         "id": 1,
@@ -92,12 +88,10 @@ def channel_switch_json_command(xbmc_host, xbmc_port, channelid):
         "params": {"item": {"channelid": channelid}}
         }    
         
-    writeLog('DEBUG in channel_switch_json_command params: %s' % (command['params']), level=xbmc.LOGNOTICE)
-    writeLog('DEBUG in channel_switch_json_command command: %s' % (command), level=xbmc.LOGNOTICE)
+    writeLog('Switch channel to %s on %s' % (channelid,xbmc_host), level=xbmc.LOGNOTICE)
     payload = json.dumps(command, ensure_ascii=False)
     payload.encode('utf-8')
         
-    writeLog('DEBUG in channel_switch_json_command PAYLOAD: %s' % (payload), level=xbmc.LOGNOTICE)
     headers = {'Content-Type': 'application/json-rpc; charset=utf-8'}
 
     conn = httplib.HTTPConnection(xbmc_host, xbmc_port)
@@ -111,10 +105,119 @@ def channel_switch_json_command(xbmc_host, xbmc_port, channelid):
     conn.close()
         
     if data is not None:
-        writeLog('DEBUG have sent res is: %s' % (json.loads(data)), level=xbmc.LOGNOTICE)
         return json.loads(data)
     else:
         return None
+
+################################################
+# Gather current remote player ID
+################################################
+def currentremoteplayer(xbmc_host, xbmc_port):
+    query = {
+            "jsonrpc": "2.0",
+            "method": "Player.GetActivePlayers",
+            "id": 1
+            }
+    payload = json.dumps(query, ensure_ascii=False)
+    payload.encode('utf-8')
+
+    headers = {'Content-Type': 'application/json-rpc; charset=utf-8'}
+
+    conn = httplib.HTTPConnection(xbmc_host, xbmc_port)
+    conn.request('POST', '/jsonrpc', payload, headers)
+
+    response = conn.getresponse()
+    data = None
+    if response.status == 200:
+        data = response.read()
+
+    conn.close()
+
+    if data is not None:
+        res = json.loads(data)
+        try:
+          return res['result'][0]['playerid']
+        except:
+          writeLog('Nothing playing....', level=xbmc.LOGNOTICE)
+
+          for x in range(1, 5):
+              kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
+              if kodiisenabled == "true":
+                kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+                if xbmc_host == kodiip:
+                  remotekodiname = __settings__.getSetting("kodiname.%s" % (str(x)))
+        
+
+          notifyheader="Remote Kodi PVR Info"
+          notifymsg="No active Stream on Kodi: %s" % (remotekodiname)
+          xbmc.executebuiltin('XBMC.Notification('+notifyheader+', '+notifymsg+' ,4000,'+__icon__+')')
+
+          raise SystemExit
+    else:
+        return None
+
+################################################
+# Gather current remote player Type (1->Video,2->Audio)
+################################################
+def get_remote_player_type(xbmc_host, xbmc_port, playerid):
+    query = {
+            "jsonrpc": "2.0",
+            "method": "Player.GetItem",
+            "id": 1,
+            "params": { "playerid" : playerid, "properties":["title", "album", "artist", "season", "episode", "showtitle", "tvshowid", "description"]}
+            }
+
+    payload = json.dumps(query, ensure_ascii=False)
+    payload.encode('utf-8')
+
+    headers = {'Content-Type': 'application/json-rpc; charset=utf-8'}
+
+    conn = httplib.HTTPConnection(xbmc_host, xbmc_port)
+    conn.request('POST', '/jsonrpc', payload, headers)
+
+    response = conn.getresponse()
+    data = None
+    if response.status == 200:
+        data = response.read()
+
+    conn.close()
+
+    if data is not None:
+        return json.loads(data)['result']['item']['type']
+    else:
+        return None
+
+################################################
+# Gather what plays at the moment on remote kodi
+################################################
+def get_remote_player_channel_id(xbmc_host, xbmc_port, playerid):
+    query = {
+            "jsonrpc": "2.0",
+            "method": "Player.GetItem",
+            "id": 1,
+            "params": { "playerid" : playerid, "properties":["title", "album", "artist", "season", "episode", "showtitle", "tvshowid", "description"]}
+            }
+
+    payload = json.dumps(query, ensure_ascii=False)
+    payload.encode('utf-8')
+
+    headers = {'Content-Type': 'application/json-rpc; charset=utf-8'}
+
+    conn = httplib.HTTPConnection(xbmc_host, xbmc_port)
+    conn.request('POST', '/jsonrpc', payload, headers)
+
+    response = conn.getresponse()
+    data = None
+    if response.status == 200:
+        data = response.read()
+
+    conn.close()
+
+    if data is not None:
+        return json.loads(data)['result']['item']
+    else:
+        return None
+
 
 
 
@@ -194,45 +297,145 @@ else:
 
 ### Stop All Kodis
 if methode=='stopall':
-  writeLog('DEBUG in STOPALL', level=xbmc.LOGNOTICE)
+  writeLog('STOPALL Kodis', level=xbmc.LOGNOTICE)
   notifyheader="Remote Kodi PVR Info"
   notifymsg="Stopping all Remote Kodis" 
   xbmc.executebuiltin('XBMC.Notification('+notifyheader+', '+notifymsg+' ,4000,'+__icon__+')')
-  for x in range(1, 4):
+  for x in range(1, 5):
       kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
-      writeLog('DEBUG in for loop %s : isenabled: %s' % (str(x),kodiisenabled), level=xbmc.LOGNOTICE)
       if kodiisenabled == "true":
         kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
-        writeLog('DEBUG stop=True for: %s' % (str(kodiip)), level=xbmc.LOGNOTICE)
         try:
           send_json_command_http(kodiip, 80, "Player.Stop", params=[1], id=1)
         except:
           pass
+### Stop All other Kodis
+elif methode=='stopallother':
+  writeLog('STOPALLOTHER Kodis', level=xbmc.LOGNOTICE)
+  notifyheader="Remote Kodi PVR Info"
+  notifymsg="Stopping all other Remote Kodis" 
+  xbmc.executebuiltin('XBMC.Notification('+notifyheader+', '+notifymsg+' ,4000,'+__icon__+')')
+  localip=xbmc.getIPAddress()
+  for x in range(1, 5):
+      kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
+      if kodiisenabled == "true":
+        kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+        if localip != kodiip:
+          try:
+            send_json_command_http(kodiip, 80, "Player.Stop", params=[1], id=1)
+          except:
+            pass
+
 
 ### Play local stream on all Kodis
 elif methode=='playalllocal':
-  writeLog('DEBUG in PLAY ALL LOCAL', level=xbmc.LOGNOTICE)
+  writeLog('PLAYALLLOCAL Kodis', level=xbmc.LOGNOTICE)
   CurrentPlayer=currentplayer()
-  writeLog('DEBUG in PLAY Current %s' % (str(CurrentPlayer)), level=xbmc.LOGNOTICE)
   if str(CurrentPlayer)=="1":  
     PlayerType=get_player_type(CurrentPlayer)
-    writeLog('DEBUG in PLAY Type %s' % (str(PlayerType)), level=xbmc.LOGNOTICE)
     if PlayerType=="channel":
       CurrentChannel=get_player_channel_id(CurrentPlayer)  
       CurrentChannel=CurrentChannel['id']
-      writeLog('DEBUG in PLAY Channel %s' % (str(CurrentChannel)), level=xbmc.LOGNOTICE)
       
       notifyheader="Remote Kodi PVR Info"
       notifymsg="Start current stream on all Remote Kodis" 
       xbmc.executebuiltin('XBMC.Notification('+notifyheader+', '+notifymsg+' ,4000,'+__icon__+')')
-      for x in range(1, 4):
+      localip=xbmc.getIPAddress()
+      for x in range(1, 5):
         kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
-        writeLog('DEBUG in PLAY for loop %s' % (str(x)), level=xbmc.LOGNOTICE)
         if kodiisenabled == "true":
           kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
-          writeLog('DEBUG enable=True for: %s' % (str(kodiip)), level=xbmc.LOGNOTICE)
-          params = { 'item': { 'channelid': int(CurrentChannel) } }
-          channel_switch_json_command(kodiip, 80, CurrentChannel)
-else:
-  RezapLast=WINDOW.getProperty('ReZap.Last.1')
+          if localip != kodiip:
+            params = { 'item': { 'channelid': int(CurrentChannel) } }
+            channel_switch_json_command(kodiip, 80, CurrentChannel)
+
+### Send  local stream to remote Kodi
+elif methode=='sendlocal':
+  writeLog('SENDLOCAL stream to Kodis', level=xbmc.LOGNOTICE)
+  CurrentPlayer=currentplayer()
+  if str(CurrentPlayer)=="1":  
+    PlayerType=get_player_type(CurrentPlayer)
+    if PlayerType=="channel":
+      CurrentChannel=get_player_channel_id(CurrentPlayer)  
+      CurrentChannel=CurrentChannel['id']
+      
+      localip=xbmc.getIPAddress()
+      dialog = xbmcgui.Dialog()
+      dialogEntrys=[]
+      for x in range(1, 5):
+        kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
+        if kodiisenabled == "true":
+          kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+          if localip != kodiip:
+	    dialogEntrys.append(__settings__.getSetting("kodiname.%s" % (str(x))))
+      ret = dialog.select("Sende Stream an Kodi:",dialogEntrys)
+
+      num=0
+      for x in range(1, 5):
+        kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
+        if kodiisenabled == "true":
+          kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+          if localip != kodiip:
+            if ret == num:
+              params = { 'item': { 'channelid': int(CurrentChannel) } }
+              channel_switch_json_command(__settings__.getSetting("kodiip.%s" % (str(x))), 80, CurrentChannel)
+              num += 1
+            else:
+              num += 1
+
+### get remote stream to local Kodi
+elif methode=='fetchremote':
+  writeLog('FETCHREMOTE stream from Kodi', level=xbmc.LOGNOTICE)
+  localip=xbmc.getIPAddress()
+  dialog = xbmcgui.Dialog()
+  dialogEntrys=[]
+  for x in range(1, 5):
+    kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
+    if kodiisenabled == "true":
+      kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+      if localip != kodiip:
+        dialogEntrys.append(__settings__.getSetting("kodiname.%s" % (str(x))))
+  ret = dialog.select("Hole Stream von Kodi:",dialogEntrys)
+
+  num=0
+  for x in range(1, 5):
+    kodiisenabled = __settings__.getSetting("kodienable.%s" % (str(x)))
+    if kodiisenabled == "true":
+      kodiip = __settings__.getSetting("kodiip.%s" % (str(x)))
+      if localip != kodiip:
+        if ret == num:
+          remotekodiip=kodiip
+          num += 1
+        else:
+          num += 1
+  CurrentRemotePlayer=currentremoteplayer(remotekodiip,80)
+  if str(CurrentRemotePlayer)=="1":  
+    PlayerType=get_remote_player_type(remotekodiip,80,CurrentRemotePlayer)
+    if PlayerType=="channel":
+      CurrentRemoteChannel=get_remote_player_channel_id(remotekodiip,80,CurrentRemotePlayer)  
+      CurrentChannel=CurrentRemoteChannel['id']
+      params = { 'item': { 'channelid': int(CurrentChannel) } }
+      channel_switch_json_command("127.0.0.1", 80, CurrentChannel)
+
+
+
+elif methode=='main':
+  writeLog('MAIN Menu', level=xbmc.LOGNOTICE)
+  dialog = xbmcgui.Dialog()
+  dialogEntrys=["Stoppe Stream auf allen Kodis","Stoppe Stream auf allen anderen Kodis","Starte Stream auf allen Kodis","Starte Stream auf bestimmtem Kodi","Hole Stream von Remote Kodi" ]
+  ret = dialog.select("Remote Kodi",dialogEntrys)
+  if ret==0:
+    xbmc.executebuiltin('XBMC.RunScript(service.remotekodi,"?methode=stopall")')
+  if ret==1:
+    xbmc.executebuiltin('XBMC.RunScript(service.remotekodi,"?methode=stopallother")')
+  if ret==2:
+    xbmc.executebuiltin('XBMC.RunScript(service.remotekodi,"?methode=playalllocal")')
+  if ret==3:
+    xbmc.executebuiltin('XBMC.RunScript(service.remotekodi,"?methode=sendlocal")')
+  if ret==4:
+    xbmc.executebuiltin('XBMC.RunScript(service.remotekodi,"?methode=fetchremote")')
+  
+
+#else:
+#  RezapLast=WINDOW.getProperty('ReZap.Last.1')
 
